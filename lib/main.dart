@@ -18,23 +18,21 @@ class MainApp extends StatelessWidget {
       create: (context) => MainAppState(),
       child: MaterialApp(
         theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        ),
 
-      home: HomePage(),
+        home: HomePage(),
       ),
     );
-    
-     
   }
 }
 
-class MainAppState extends ChangeNotifier{
-  var palavraatual = WordPair.random();
+class MainAppState extends ChangeNotifier {
+  var palavraAtual = WordPair.random();
 
-  void gerarNovaPalavra(){
-    palavraatual = WordPair.random();
+  void gerarNovaPalavra() {
+    palavraAtual = WordPair.random();
     notifyListeners();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutterapp/components/big_card.dart';
 import 'package:flutterapp/main.dart';
 import 'package:provider/provider.dart';
@@ -11,23 +11,24 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            BigCard(appState:appState),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BigCard(appState: appState),
 
-            Text("asLowerCase: ${appState.palavraatual.asLowerCase}"),
-            
+              SizedBox(height: 20),
 
-            ElevatedButton(
-              onPressed: appState.gerarNovaPalavra,
+              ElevatedButton(
+                onPressed: appState.gerarNovaPalavra,
 
-
-
-              child: Text("Próxima palavra"))
-          ],
+                child: Text("Próxima palavra"),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
