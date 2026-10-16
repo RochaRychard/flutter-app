@@ -35,14 +35,21 @@ class MainAppState extends ChangeNotifier {
     palavraAtual = WordPair.random();
     notifyListeners();
   }
-var palavrasFavoritas  = <WordPair>[];
-void marcarComoFavorito(){
-  if(palavrasFavoritas.contains(palavraAtual)){
-    palavrasFavoritas.remove(palavraAtual);
-  } else{
-    palavrasFavoritas.add(palavraAtual);
-  }
-  notifyListeners();
-}
 
+  var palavrasFavoritas = <WordPair>[];
+  void marcarComoFavorito() {
+    if (palavrasFavoritas.contains(palavraAtual)) {
+      palavrasFavoritas.remove(palavraAtual);
+    } else {
+      palavrasFavoritas.add(palavraAtual);
+    }
+    notifyListeners();
+  }
+
+  void removerItem(WordPair item) {
+    if (palavrasFavoritas.contains(item)) {
+      palavrasFavoritas.remove(item);
+      notifyListeners();
+    }
+  }
 }

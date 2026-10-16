@@ -1,3 +1,4 @@
+import 'package:english_words/src/word_pair.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutterapp/components/big_card.dart';
@@ -11,41 +12,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var menuSelecionado = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          SafeArea(
-            child: NavigationRail(
-              extended: false,
-              selectedIndex: 0,
-              onDestinationSelected: (value) => {
-                print(value)
-              },
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text("Home"),
+    Widget pagina;
+    switch (menuSelecionado) {
+      case 0:
+        {
+          pagina = TelaHome();
+          break;
+        }
+      case 1:
+        {
+          pagina = TelaFavoritos();
+          break;
+        }
+      default:
+        {
+          throw UnimplementedError();
+        }
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          body: Row(
+            children: [
+              SafeArea(
+                child: NavigationRail(
+                  extended: constraints.maxWidth >= 600,
+                  selectedIndex: menuSelecionado,
+                  onDestinationSelected: (selecionado) => {
+                    setState(() {
+                      menuSelecionado = selecionado;
+                    }),
+                  },
+                  destinations: [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.home),
+                      label: Text("Home"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.favorite),
+                      label: Text("Favoritos"),
+                    ),
+                  ],
                 ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite),
-                  label: Text("Favoritos"),
+              ),
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: pagina,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Expanded(child: Container(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            child: GeradorPage(),
-          ))
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class GeradorPage extends StatelessWidget {
+class TelaHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MainAppState>();
@@ -88,3 +117,35 @@ class GeradorPage extends StatelessWidget {
     );
   }
 }
+
+class TelaFavoritos extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MainAppState>();
+
+    if (appState.palavrasFavoritas.isEmpty) {
+      return Text("Nenhum favorito localizado");
+    }
+
+    return ListView(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(30),
+          child: Text(
+            "Você tem ${appState.palavrasFavoritas.length} favoritos:",
+          ),
+        ),
+        for (var item in appState.palavrasFavoritas)
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text(item.asLowerCase),
+            onTap: () =>
+              appState.removerItem(item)
+            
+          ),
+      ],
+    );
+  }
+}
+
+
